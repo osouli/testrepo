@@ -1,0 +1,524 @@
+{
+	"info": {
+		"_postman_id": "7c9fd98f-edcf-448b-bfba-492785e5090b",
+		"name": "trello test collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create a board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Board creates successfully\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    const res=pm.response.json()",
+							"    pm.environment.set(\"boardId\", res.id);",
+							"});",
+							" pm.test(\"Creation response time is less than 600ms\", function () {",
+							"        pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"    });",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/?name=myBoard&key={{key}}&token={{token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "myBoard"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "idOrganization",
+							"value": "609a2a1c5d297b3f1e781ef6",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create a board with invalid name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"invalid value for name response error\", function () {",
+							"    pm.response.to.have.body(\"invalid value for name\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/?name=&key={{key}}&token={{token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": ""
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create a board without key param",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"pm.test(\"invalid key response error\", function () {",
+							"    pm.response.to.have.body(\"invalid key\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/?name=myBoard&token={{token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "myBoard"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}",
+							"disabled": true
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create a board with invalid token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"pm.test(\"invalid token response error\", function () {",
+							"    pm.response.to.have.body(\"invalid token\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/?name=myBoard&key={{key}}&token=f705a4a6996784f6d92915437286437975b84106eec85d15781db75cbaca1355",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "myBoard"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "f705a4a6996784f6d92915437286437975b84106eec85d15781db75cbaca1355"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a board without key and token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"pm.test(\"unauthorized response error\", function () {",
+							"    pm.response.to.have.body(\"unauthorized permission requested\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/:id",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}",
+							"disabled": true
+						},
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{boardId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"created name is matched\", function () {",
+							"    pm.expect(jsonData.name).to.eql(\"myBoard\");",
+							"});",
+							"pm.test(\"created board must be private\", function () {",
+							"      pm.expect(jsonData.prefs.permissionLevel).to.eql(\"private\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/:id?key={{key}}&token={{token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{boardId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete a board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Board successfully deleted\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData._value).to.eql(null);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/:id?key={{key}}&token={{token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{boardId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete a board which not found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"pm.test(\"not found response error message\", function () {",
+							"    pm.response.to.have.body(\"The requested resource was not found.\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/:id?key={{key}}&token={{token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{boardId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a deleted board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"pm.test(\"not found response error message\", function () {",
+							"    pm.response.to.have.body(\"The requested resource was not found.\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/:id",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}",
+							"disabled": true
+						},
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{boardId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
